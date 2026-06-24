@@ -1,16 +1,19 @@
 import unittest
-from calc import Calc
+from gen import valid_date
 
-class TestCalc(unittest.TestCase):
+class TestDate(unittest.TestCase):
 
-    def setUp(self):
-        self.calc = Calc()
+    def test_valid_date(self):
+        self.assertFalse(valid_date("06/24/2026"))
+    
+    def test_invalid_format(self):
+        self.assertTrue(valid_date("04-20-2026"))
 
-    def test_add(self):
-        self.assertEqual(self.calc.add(2, 3), 5)
+    def test_invalid_date(self):
+        self.assertTrue(valid_date("16/24/2026"))
+    
+    def test_string(self):
+        self.assertTrue(valid_date("hi"))
 
-    def test_sub(self):
-        self.assertEqual(self.calc.sub(2, 3), -1)
-
-    def test_mul(self):
-        self.assertEqual(self.calc.mul(2, 3), 6)
+if __name__ == "__main__":
+    unittest.main()
