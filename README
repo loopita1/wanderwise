@@ -1,0 +1,26 @@
+/*******************************************************************************
+* WanderWise
+* README
+* Author: Diana Calderon and Nadhif Rabbani
+* Date: 6/23/2026
+*******************************************************************************/
+
+Program Purpose:
+---------------
+    A program that gathers key travel data in one place and uses AI to turn
+    a provided location and dates to a clear travel guide wth tour attractions
+    and items to pack provided
+
+
+Compile/run:
+-----------
+
+    Instructions on how to compile the program
+    (eg "make" or "unit_test")
+    How to run the program (eg Usage)
+
+Files:
+-----
+
+    unit_tests.py: Unit tests for project
+    README: This file
