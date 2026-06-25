@@ -77,7 +77,5 @@ def filter_top_deals(deals, different_countries = True, max_deals = 5, stops_fil
 
 
 
-    
-
 
 
