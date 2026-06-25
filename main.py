@@ -4,7 +4,6 @@ from gen import generate_trip_summary, validDate
 import datetime
 
 
- 
 COUNTRY_CURRENCY = {
     "japan": "JPY", "france": "EUR", "germany": "EUR", "italy": "EUR",
     "spain": "EUR", "mexico": "MXN", "canada": "CAD", "uk": "GBP",
@@ -16,13 +15,14 @@ COUNTRY_CURRENCY = {
     "vietnam": "VND", "philippines": "PHP", "malaysia": "MYR",
 }
 
+
 def get_currency(country):
-  return COUNTRY_CURRENCY.get(country.lower(), "USD")
+    return COUNTRY_CURRENCY.get(country.lower(), "USD")
 
 
 def main():
-  print("Welcome to WanderWise, your personal travel assistant! ")
-
-  departure_id = input("\nWhat is your departure airport code? (e.g. JFK, LAX, DFW): ").strip().upper()
-
-  see_deals = input("Would you like to see current flight deals from your airport? (Y/N): ").strip().lower()
+    print("Welcome to WanderWise, your personal travel assistant! ")
+    text1 = "\nWhat is your departure airport code? (e.g. JFK, LAX, DFW): "
+    departure_id = input(text1).strip().upper()
+    t = "Would you like to see current flight deals from your airport? (Y/N): "
+    see_deals = input(t).strip().lower()
