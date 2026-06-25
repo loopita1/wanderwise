@@ -74,8 +74,8 @@ def filter_top_deals(deals, different_countries = True, max_deals = 5, stops_fil
     return cleaned_deals
 
 if __name__ == "__main__":
-    deals = all_flight_deals("LAX")
-    top_deals = filter_top_deals(deals, different_countries=True, max_deals=5, stops_filter=None)
+    deals = all_flight_deals("JFK")
+    top_deals = filter_top_deals(deals, different_countries=False, max_deals=5, stops_filter=1)
 
     print("Top deals found:", len(top_deals))
 
