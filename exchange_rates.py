@@ -58,7 +58,7 @@ def exchange_rate_difference(base_currency, target_currency, months = 12):
 
 
 if __name__ == "__main__":
-    result = exchange_rate_difference("USD", "JPY", 24)
+    result = exchange_rate_difference("USD", "JPY", 36)
 
     print("----------------------")
     print(f"{result['base']} to {result['target']}")
