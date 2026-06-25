@@ -1,5 +1,5 @@
 import unittest
-from gen import validDate
+from gen import valid_date
 
 class TestDate(unittest.TestCase):
 

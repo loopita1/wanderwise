@@ -3,9 +3,7 @@ from dotenv import load_dotenv
 from datetime import datetime
 import os
 
-load_dotenv(dontenv_path=".env")
-
-def validDate(dates):
+def valid_date(dates):
         try:
             datetime.strptime(dates, "%m/%d/%Y")
             return False
@@ -15,6 +13,7 @@ def validDate(dates):
 
 
 def generate_trip_summary(location, start, end, exchange_data, deal=None):
+  load_dotenv(dontenv_path=".env")
   api_key = os.getenv("GEMINI_API_KEY")
   client = genai.Client(api_key=api_key)
   base = exchange_data.get("base")

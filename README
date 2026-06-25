@@ -9,18 +9,22 @@ Program Purpose:
 ---------------
     A program that gathers key travel data in one place and uses AI to turn
     a provided location and dates to a clear travel guide wth tour attractions
-    and items to pack provided
+    and items to pack provided. Also gives travel deals to assist in helping someone
+    pick out a location
 
 
 Compile/run:
 -----------
 
-    Instructions on how to compile the program
-    (eg "make" or "unit_test")
-    How to run the program (eg Usage)
+   python3 unit_tests.py for unit_tests
+   python3 main.py to run functions
 
 Files:
 -----
 
     unit_tests.py: Unit tests for project
+    exchange_rates.py - Compares exchange rates over a specified time using Exchange Rate API
+    serp_flights_deals.py - Get flight deals from Serp API Google Flights and returns the best deal with travel information
+    gen.py - Uses Gemini Google AI Studio API to prompt an itinerary for a given location and date
+
     README: This file
