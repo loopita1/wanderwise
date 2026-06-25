@@ -4,16 +4,81 @@ import json
 
 
 def all_flight_deals(departure_id):
-    key = "19e623d3d1663c0740835797df100dfadc565c1d61d6aea4e0533f1bbe402bcb"
+    key = os.getenv("SERP_API_KEY")
+
+    if key is None:
+        return("ERROR, API KEY NOT FOUND")
+
     client = serpapi.Client(api_key=key)
-    results = client.search({
+
+    results = dict(client.search({
     "engine": "google_flights_deals",
     "departure_id": departure_id,
     "currency": "USD"
-    })
+    }))
+
+    print("RESULT KEYS:", results.keys())
+    print("SEARCH STATUS:", results.get("search_metadata", {}).get("status"))
+    print("ERROR:", results.get("error"))
+    print("SEARCH PARAMETERS:", results.get("search_parameters"))
+    print("RAW RESULT PREVIEW:")
+    print(json.dumps(results, indent=4)[:3000])
 
     return results.get("deals", [])
 
-#def filtered_deals(deals):
+def filtered_deals(deals):
+    price = deals.get("price")
+    average_price = deals.get("average_price")
+    
+    price_difference = None
+
+    if price is not None and average_price is not None:
+        price_difference = average_price - price
+    
+    return {
+        "location" : deals.get("name"),
+        "country" : deals.get("country"),
+        "departure_airport" : deals.get("departure_airport_code"),
+        "arrival_airport" : deals.get("arrival_airport_code"),
+        "start_date" : deals.get("start_date"),
+        "end_date" : deals.get("end_date"),
+        "price" : price,
+        "average_price" : average_price,
+        "price_difference" : price_difference,
+        "discount_percentage" : deals.get("discount_percentage"),
+        "airline" : deals.get("airline"),
+        "stops" : deals.get("stops"),
+        "url" : deals.get("flight_link") or deals.get("serpapi_flight_link")
+    }
+
+def filter_top_deals(deals, different_countries = True, max_deals = 5, stops_filter=0):
+    seen_countries = set()
+    cleaned_deals = []
+
+    for deal in deals:
+        country = deal.get("country")
+        stops = deal.get("stops")
+
+        if stops > stops_filter:
+            continue
+        
+        if different_countries:
+            if country in seen_countries:
+                continue
+        
+        cleaned_deals.append(filtered_deals(deal))
+        seen_countries.add(country)
+
+        if len(cleaned_deals) == max_deals:
+            break
+    
+    return cleaned_deals
+
+        
+
+
+
+    
+
 
 
