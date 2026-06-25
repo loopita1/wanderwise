@@ -17,13 +17,6 @@ def all_flight_deals(departure_id):
     "currency": "USD"
     }))
 
-    print("RESULT KEYS:", results.keys())
-    print("SEARCH STATUS:", results.get("search_metadata", {}).get("status"))
-    print("ERROR:", results.get("error"))
-    print("SEARCH PARAMETERS:", results.get("search_parameters"))
-    print("RAW RESULT PREVIEW:")
-    print(json.dumps(results, indent=4)[:3000])
-
     return results.get("deals", [])
 
 def filtered_deals(deals):
@@ -58,6 +51,12 @@ def filter_top_deals(deals, different_countries = True, max_deals = 5, stops_fil
     for deal in deals:
         country = deal.get("country")
         stops = deal.get("stops")
+
+        if country is None:
+            continue
+        if stops is None:
+            continue
+
 
         if stops > stops_filter:
             continue
