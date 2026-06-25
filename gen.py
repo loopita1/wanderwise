@@ -12,40 +12,57 @@ def validDate(dates):
         except ValueError:
             return True
 
-if __name__ == "__main__":
-    print("Welcome to WanderWise, your personal travel assistant!")
-    answer = input("Do you already have a place and date in mind? (Y/N)\n")
-    load_dotenv(dotenv_path=".env")
 
-    api_key = os.getenv("GEMINI_API_KEY")
 
-    while answer.lower() != "y" and answer.lower() != "n":
-        answer = input("Do you already have a place and date in mind?")
-    if answer.lower() == "n":
-        
-        interaction = client.interactions.create(
-            model="gemini-2.5-flash-lite",
-            input=f"give a list of the 5 interesting facts for tourists to know for each country in {top3}"
+def generate_trip_summary(location, start, end, exchange_data, deal=None):
+  api_key = os.getenv("GEMINI_API_KEY")
+  client = genai.Client(api_key=api_key)
+  base = exchange_data.get("base")
+  target = exchange_data.get("target")
+  current_rate = exchange_data.get("current_rate")
+  average_rate = exchange_data.get("average_rate")
+  percent_difference = exchange_data.get("percent_difference")
+  months = exchange_data.get("months")
+
+
+  if deal:
+    flight_info = (
+      f"The traveler has a flight deal: {deal['departure_airport']} → {deal['arrival_airport']} "
+      f"on {deal['airline']} for ${deal['price']} (average price ${deal['average_price']}, "
+      f"saving ${deal['price_difference']}, {deal['discount_percentage']}% off) with {deal['stops']} stop(s). "
+      f"Travel dates: {start} to {end}. Flight URL: {deal['url']}"
         )
-        print(interaction.output_text)
-    else:
-        location = input("Please put your desired city and country of origin, separating them with a comma (Ex: Madrid, Spain)\n")
+  else:
+    flight_info = (
+      f"No specific flight deal was selected. Include a brief note about the approximate"
+      f"distance and flight duration to {location}, and the likely destination airport there."
 
-        # check for valid start and end dates
-        start = input("Please enter your intended arrival date for travel in the format MM/DD/YY\n")    
-        while validDate(start):
-            start = input("Please enter your intended arrival date for travel in the format MM/DD/YY\n")    
-        start_date = datetime.strptime(start, "%m/%d/%Y")
+    )
+  
+  exchange_info = (
+    f"Exchange rate: 1 {base} = {current_rate:.4f} {target} today. "
+    f"The {months}-month average was {average_rate:.4f} {target}. "
+    f"The current rate is {percent_difference:+.2f}% vs the average. "
+  )
 
-        end = input("Please enter your intended departure date for travel in the format MM/DD/YY\n")
-        end_date = datetime.strptime(end, "%m/%d/%Y")
-        while validDate(end) or end_date <= start_date:
-            end = input("Please enter your intended departure date for travel in the format MM/DD/YY\n") 
-        client = genai.Client(api_key=api_key)
+  prompt = (
+    f"give a day by day itinerary of {location} for a tourist to go during {start} until {end} "
+    f"that are popular during the season, make sure the itinerary is clear and bulleted with dates and locations, "
+    f"also provide a packing list below this itinerary including the clothing to wear, the type of outlet the "
+    f"location has, currency, overall weather during the dates, and the primary language spoken. "
+    f"\n\nFlight information: {flight_info}"
+    f"\n\nExchange rate information: {exchange_info} Comment briefly on whether now is a good or bad time "
+    f"to exchange USD to {target} based on this trend."
+  )
 
-        # get and print gen ai response
-        interaction = client.interactions.create(
-            model="gemini-2.5-flash-lite",
-            input=f"give a day by day itinerary of {location} for a tourist to go during {start} until {end} that are popular during the season, make sure the itinerary is clear a bulleted with dates and locations, also provide a packing list below this itinerary including the clothing to wear, the type of outlet the location has, currency, overall weather during the dates, and the primary language spoken"
-        )
-        print(interaction.output_text)
+  interaction = client.models.generate_content(
+    model ="gemini-2.5-flash-lite",
+    contents=prompt
+
+  )
+  print(interaction.text)
+
+
+
+
+
