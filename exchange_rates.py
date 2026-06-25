@@ -56,4 +56,12 @@ def exchange_rate_difference(base_currency, target_currency, months = 12):
         "months": months       
     }
 
-    
+
+if __name__ == "__main__":
+    result = exchange_rate_difference("USD", "JPY", 24)
+
+    print("----------------------")
+    print(f"{result['base']} to {result['target']}")
+    print(f"Current Rate: {result['current_rate']:.4f}")
+    print(f"{result['months']}-Month Average: {result['average_rate']:.4f}")
+    print(f"Percent Difference: {result['percent_difference']:.2f}%")

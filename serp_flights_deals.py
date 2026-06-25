@@ -73,6 +73,20 @@ def filter_top_deals(deals, different_countries = True, max_deals = 5, stops_fil
     
     return cleaned_deals
 
+if __name__ == "__main__":
+    deals = all_flight_deals("LAX")
+    top_deals = filter_top_deals(deals, different_countries=True, max_deals=5, stops_filter=None)
+
+    print("Top deals found:", len(top_deals))
+
+    for deal in top_deals:
+        print("----------------------")
+        print("Location:", deal["location"])
+        print("Country:", deal["country"])
+        print("Price:", deal["price"])
+        print("Average Price:", deal["average_price"])
+        print("Price Difference:", deal["price_difference"])
+        print("Stops:", deal["stops"])
         
 
 
